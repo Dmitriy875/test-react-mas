@@ -1,5 +1,6 @@
 import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from '@material-ui/core';
 import React, { Component } from 'react';
+import Filter from './Filter.js';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 
@@ -34,6 +35,10 @@ export default class UsersTable extends Component {
     )
   }
 
+  handleRowClick(name) {
+    alert("Wow! Dude! It works! Meet " + name)
+  }
+
   render() {
     const StyledTableCell = withStyles((theme) => ({
       head: {
@@ -63,6 +68,8 @@ export default class UsersTable extends Component {
     } else {
       return (
         <div className="content-table">
+        <Filter />
+
         <TableContainer>
           <Table>
             <TableHead>
@@ -75,27 +82,27 @@ export default class UsersTable extends Component {
             </TableHead>
             <TableBody>
               {users.map(item=>(
-                <TableRow>
-                <TableCell>
-                  <span key={item.id}>
-                    {item.name}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span>
-                    {item.username}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span>
-                    {item.email}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span>
-                    {item.website}
-                  </span>
-                </TableCell>
+                <TableRow onClick={()=>{this.handleRowClick(item.name)}}  key={item.id}>
+                  <TableCell>
+                    <span>
+                      {item.name}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span>
+                      {item.username}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span>
+                      {item.email}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span>
+                      {item.website}
+                    </span>
+                  </TableCell>
               </TableRow>
               ))}
             </TableBody>

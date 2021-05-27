@@ -56,6 +56,10 @@ footer {
   /* min-height: 100%; */
 }
 
+.filter {
+  height: auto;
+  text-align: center;
+}
 
 /* .App-header {
   background-color: #282c34;
