@@ -1,7 +1,10 @@
 import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from '@material-ui/core';
 import React, { Component } from 'react';
 import Filter from './Filter.js';
+import ModalWindow from './ModalWindow.js';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { Grid, Paper } from '@material-ui/core';
+
 
 
 export default class UsersTable extends Component {
@@ -11,7 +14,9 @@ export default class UsersTable extends Component {
     this.state = {
       isLoaded: false,
       users: [],
+      name: ''
     }
+    this.handleRowClick = this.handleRowClick.bind(this);
   }
 
 
@@ -37,7 +42,11 @@ export default class UsersTable extends Component {
 
   handleRowClick(name) {
     alert("Wow! Dude! It works! Meet " + name)
+    this.setState({
+      name: name
+    })
   }
+
 
   render() {
     const StyledTableCell = withStyles((theme) => ({
@@ -68,46 +77,57 @@ export default class UsersTable extends Component {
     } else {
       return (
         <div className="content-table">
-        <Filter />
+        <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item xs={5}>
+              <Paper>
+            <Filter />
 
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <StyledTableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Website</TableCell>
-            </StyledTableRow>
-            </TableHead>
-            <TableBody>
-              {users.map(item=>(
-                <TableRow onClick={()=>{this.handleRowClick(item.name)}}  key={item.id}>
-                  <TableCell>
-                    <span>
-                      {item.name}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span>
-                      {item.username}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span>
-                      {item.email}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span>
-                      {item.website}
-                    </span>
-                  </TableCell>
-              </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <StyledTableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Website</TableCell>
+                </StyledTableRow>
+                </TableHead>
+                <TableBody>
+                  {users.map(item=>(
+                    <TableRow onClick={()=>{this.handleRowClick(item.name)}}  key={item.id}>
+                      <TableCell>
+                        <span>
+                          {item.name}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span>
+                          {item.username}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span>
+                          {item.email}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span>
+                          {item.website}
+                        </span>
+                      </TableCell>
+                  </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+
+            <ModalWindow name={this.state.name}/>
+
+          </Grid>
+      </Grid>
       </div>
       )
     }

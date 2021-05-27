@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Grid, Paper, Button, TextField } from '@material-ui/core';
 
 export default class Filter extends Component {
   constructor(props) {
@@ -11,16 +12,45 @@ export default class Filter extends Component {
 
   render() {
     return (
-      <div className='filter'>
-        <h4>Фильтр</h4>
-        <div>
-          <span>Username</span><input placeholder="Username" type="text"/>
-        </div>
-        <div>
-          <span>Website</span><input placeholder="Website" type="text"/>
-        </div>
-      <button>Сбросить</button>
-      <button>Применить</button>
+      <div>
+        <Grid container direction="row"  justify="center" alignItems="center" spacing={5}>
+            <Grid item xs={12}>
+              <div className='filter'>
+                <h4>Фильтр</h4>
+              </div>
+            </Grid>
+        </Grid>
+
+
+        <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item xs={2}>
+              Username
+            </Grid>
+            <Grid item xs={2}>
+              <TextField id="outlined-search" label="Search field" type="search" variant="outlined"></TextField>
+            </Grid>
+        </Grid>
+
+
+        <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item xs={2}>
+              Website
+            </Grid>
+            <Grid item xs={2}>
+              <TextField id="outlined-search" label="Website" type="search" variant="outlined"></TextField>
+            </Grid>
+        </Grid>
+
+
+
+        <Grid item xs={12} container justify="flex-end">
+          <Grid item xs={2} >
+            <Button variant="outlined" color='secondary'>Сбросить</Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button variant="outlined" color='primary'>Применить</Button>
+          </Grid>
+        </Grid>
       </div>
     )
   }
