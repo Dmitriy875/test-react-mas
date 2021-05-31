@@ -2,9 +2,9 @@ import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from
 import React, { Component } from 'react';
 import Filter from './Filter.js';
 import ModalWindow from './ModalWindow.js';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper } from '@material-ui/core';
-
+import { Checkbox } from '@material-ui/core';
 
 
 export default class UsersTable extends Component {
@@ -14,9 +14,11 @@ export default class UsersTable extends Component {
     this.state = {
       isLoaded: false,
       users: [],
-      name: ''
+      name: '',
+      id: '',
+      modalVisible: false,
+      todos:[],
     }
-    this.handleRowClick = this.handleRowClick.bind(this);
   }
 
 
@@ -25,40 +27,61 @@ export default class UsersTable extends Component {
     .then( res => res.json() )
     .then(
       (result) => {
-        this.setState({
+        this.setState( state => ({
           isLoaded: true,
           users: result,
           error: null,
-        });
+        }));
       },
       (error) => {
-        this.setState({
+        this.setState( state => ({
           isLoaded: true,
           error
-        });
+        }));
       }
     )
   }
 
-  handleRowClick(name) {
-    alert("Wow! Dude! It works! Meet " + name)
-    this.setState({
-      name: name
-    })
+  handleRowClick(name, id) {
+    this.setState( state => ({
+      name: name,
+      id: id,
+      modalVisible: true
+    }));
+
+    fetch( `https://jsonplaceholder.typicode.com/users/${id}/todos` )
+    .then( res => res.json() )
+    .then( res => res.map( (item) => {
+      if( item.completed === false ) {
+          item.completed = <Checkbox disabled color='default'></Checkbox>;
+      }
+      if( item.completed === true ) {
+        item.title = <strike>{item.title}</strike>;
+        item.completed = <Checkbox checked color='primary'></Checkbox>;
+      }
+      return item;
+    }))
+
+    .then(
+      (result) => {
+        this.setState( state => ({
+          isLoaded: true,
+          todos: result,
+          error: null,
+        }));
+      },
+      (error) => {
+        this.setState( state => ({
+          isLoaded: true,
+          error
+        }));
+      }
+    )
+
   }
 
 
   render() {
-    const StyledTableCell = withStyles((theme) => ({
-      head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-      },
-      body: {
-        fontSize: 14,
-      },
-    }))(TableCell);
-
     const StyledTableRow = withStyles((theme) => ({
       root: {
         '&:nth-of-type(odd)': {
@@ -94,7 +117,7 @@ export default class UsersTable extends Component {
                 </TableHead>
                 <TableBody>
                   {users.map(item=>(
-                    <TableRow onClick={()=>{this.handleRowClick(item.name)}}  key={item.id}>
+                    <TableRow onClick={()=>{this.handleRowClick(item.name, item.id)}}  key={item.id}>
                       <TableCell>
                         <span>
                           {item.name}
@@ -124,7 +147,7 @@ export default class UsersTable extends Component {
           </Grid>
           <Grid item xs={3}>
 
-            <ModalWindow name={this.state.name}/>
+            <ModalWindow name={this.state.name} id={this.state.id} visible={this.state.modalVisible} todos={this.state.todos}/>
 
           </Grid>
       </Grid>
