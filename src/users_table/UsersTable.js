@@ -4,7 +4,6 @@ import Filter from './Filter.js';
 import ModalWindow from './ModalWindow.js';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper } from '@material-ui/core';
-import { Checkbox } from '@material-ui/core';
 
 
 export default class UsersTable extends Component {
@@ -18,9 +17,9 @@ export default class UsersTable extends Component {
       id: '',
       modalVisible: false,
       todos:[],
+      modalChanged: false,
     }
   }
-
 
   componentDidMount() {
     fetch( "https://jsonplaceholder.typicode.com/users" )
@@ -51,17 +50,6 @@ export default class UsersTable extends Component {
 
     fetch( `https://jsonplaceholder.typicode.com/users/${id}/todos` )
     .then( res => res.json() )
-    .then( res => res.map( (item) => {
-      if( item.completed === false ) {
-          item.completed = <Checkbox disabled color='default'></Checkbox>;
-      }
-      if( item.completed === true ) {
-        item.title = <strike>{item.title}</strike>;
-        item.completed = <Checkbox checked color='primary'></Checkbox>;
-      }
-      return item;
-    }))
-
     .then(
       (result) => {
         this.setState( state => ({
@@ -77,9 +65,7 @@ export default class UsersTable extends Component {
         }));
       }
     )
-
   }
-
 
   render() {
     const StyledTableRow = withStyles((theme) => ({
@@ -89,8 +75,6 @@ export default class UsersTable extends Component {
         },
       },
     }))(TableRow);
-
-
     const {error, isLoaded, users} = this.state;
 
     if( error ) {
@@ -147,7 +131,11 @@ export default class UsersTable extends Component {
           </Grid>
           <Grid item xs={3}>
 
-            <ModalWindow name={this.state.name} id={this.state.id} visible={this.state.modalVisible} todos={this.state.todos}/>
+            <ModalWindow
+              name={this.state.name}
+              id={this.state.id}
+              visible={this.state.modalVisible}
+              todos={this.state.todos} />
 
           </Grid>
       </Grid>
@@ -155,5 +143,4 @@ export default class UsersTable extends Component {
       )
     }
   }
-
 }
