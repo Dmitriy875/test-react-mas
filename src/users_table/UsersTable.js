@@ -129,7 +129,7 @@ export default class UsersTable extends Component {
             </TableContainer>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
 
             <ModalWindow
               name={this.state.name}

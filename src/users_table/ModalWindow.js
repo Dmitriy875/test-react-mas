@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Grid, Container, Paper } from '@material-ui/core';
 import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from '@material-ui/core';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, Tab } from '@material-ui/core';
+import FullWidthTabs from './Tabs.js';
 
 export default class ModalWindow extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class ModalWindow extends Component {
     if( prevStateTodos ) {
       if( prevStateTodos[0].userId !== nextProps.id  ) {
         console.log('Строка с именем изменилась');
-        return {todos: ''}
+        return {todos: '', indicatorReset: true}
       }
     }
     return null;
@@ -33,6 +34,14 @@ export default class ModalWindow extends Component {
 
   componentDidMount() {
     console.log('componentDidMount')
+  }
+
+  shouldComponentUpdate() {
+    console.log('shouldComponentUpdate')
+    // if(this.state.todos) {
+    //   return false
+    // }
+    return true
   }
 
   render() {
@@ -65,9 +74,11 @@ export default class ModalWindow extends Component {
           </Container>
           <Container>
               <Grid container direction="row" justify="center" alignItems="center">
-              <Grid><span onClick={this.showAll}>Все</span></Grid>
-              <Grid><span onClick={this.showDone}>Завершено</span></Grid>
-              <Grid><span onClick={this.showActive}>В работе</span></Grid>
+              <FullWidthTabs marker={this.props.todos}>
+                <Tab label="Все" onClick={this.showAll} />
+                <Tab label="Завершены" onClick={this.showActive} />
+                <Tab label="В работе" onClick={this.showDone} />
+              </FullWidthTabs>
             </Grid>
           </Container>
             <TableContainer>
