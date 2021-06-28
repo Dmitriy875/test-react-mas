@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Grid, Container, Paper } from '@material-ui/core';
+import { Grid, Container, Paper, Divider, Typography } from '@material-ui/core';
 import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from '@material-ui/core';
 import { Checkbox, Tab } from '@material-ui/core';
 import FullWidthTabs from './Tabs.js';
+import CloseIcon from '@material-ui/icons/Close';
 
 export default class ModalWindow extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class ModalWindow extends Component {
   }
 
   static getDerivedStateFromProps( nextProps, prevState ) {
+    console.log('getDerivedStateFromProps')
     let prevStateTodos = prevState.todos;
     if( prevStateTodos ) {
       if( prevStateTodos[0].userId !== nextProps.id  ) {
@@ -69,18 +71,20 @@ export default class ModalWindow extends Component {
     return(
       <Grid container direction="row" justify="center" alignItems="center">
         <div className="modal-window">
-          <Container>
-            To do
-          </Container>
-          <Container>
-              <Grid container direction="row" justify="center" alignItems="center">
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item sm={11}><Typography variant="h6">To do</Typography></Grid>
+            <Grid item sm={1}><CloseIcon /></Grid>
+            <Divider variant="fullWidth" />
+          </Grid>
+
+            <Grid container direction="row" justify="center" alignItems="center">
               <FullWidthTabs marker={this.props.todos}>
                 <Tab label="Все" onClick={this.showAll} />
                 <Tab label="Завершены" onClick={this.showActive} />
                 <Tab label="В работе" onClick={this.showDone} />
               </FullWidthTabs>
             </Grid>
-          </Container>
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -96,8 +100,7 @@ export default class ModalWindow extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-          <Container>ModalWindow {this.props.name} {this.props.id} </Container>
-        </div>
+          </div>
       </Grid>
     )
   }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Grid, Button, TextField, Container } from '@material-ui/core';
+import { Grid, Button, TextField, Container, Typography } from '@material-ui/core';
+import InputForm from './InputForms.js';
 
 export default class Filter extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      works: true
+
     }
   }
 
@@ -17,37 +18,14 @@ export default class Filter extends Component {
           <Grid container direction="row"  justify="center" alignItems="center" spacing={5}>
               <Grid item xs={12}>
                 <div>
-                  <h4>Фильтр</h4>
+                  <Typography variant="h5">
+                    Фильтр
+                    <InputForm userNames={this.props.users}/>
+                  </Typography>
                 </div>
               </Grid>
           </Grid>
         </Container>
-
-
-        <Container>
-          <Grid container direction="row" justify="center" alignItems="center">
-              <Grid item xs={2}>
-                Username
-              </Grid>
-              <Grid item xs={2}>
-                <TextField id="outlined-search" label="Search field" type="search" variant="outlined"></TextField>
-              </Grid>
-          </Grid>
-        </Container>
-
-
-        <Container>
-          <Grid container direction="row" justify="center" alignItems="center">
-              <Grid item xs={2}>
-                Website
-              </Grid>
-              <Grid item xs={2}>
-                <TextField id="outlined-search" label="Website" type="search" variant="outlined"></TextField>
-              </Grid>
-          </Grid>
-        </Container>
-
-
 
         <Container>
           <Grid item xs={12} container justify="flex-end">
@@ -55,7 +33,7 @@ export default class Filter extends Component {
               <Button variant="outlined" color='secondary'>Сбросить</Button>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="outlined" color='primary'>Применить</Button>
+              <Button variant="outlined" color='primary' onClick={()=>{alert('works')}}>Применить</Button>
             </Grid>
           </Grid>
         </Container>

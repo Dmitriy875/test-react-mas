@@ -5,18 +5,16 @@ import ModalWindow from './ModalWindow.js';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper } from '@material-ui/core';
 
-
 export default class UsersTable extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       isLoaded: false,
       users: [],
       name: '',
       id: '',
       modalVisible: false,
-      todos:[],
+      todos: [],
       modalChanged: false,
     }
   }
@@ -87,7 +85,8 @@ export default class UsersTable extends Component {
         <Grid container direction="row" justify="center" alignItems="center">
             <Grid item xs={5}>
               <Paper>
-            <Filter />
+              
+            <Filter users={this.state.users}/>
 
             <TableContainer>
               <Table>
@@ -101,7 +100,7 @@ export default class UsersTable extends Component {
                 </TableHead>
                 <TableBody>
                   {users.map(item=>(
-                    <TableRow onClick={()=>{this.handleRowClick(item.name, item.id)}}  key={item.id}>
+                    <TableRow onClick={()=>{this.handleRowClick(item.name, item.id)}} key={item.id}>
                       <TableCell>
                         <span>
                           {item.name}
