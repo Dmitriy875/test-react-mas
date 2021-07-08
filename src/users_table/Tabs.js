@@ -1,9 +1,22 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 
-export default function FullWidthTabs(props) {
-  let [value, setValue] = React.useState(0);
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+  },
+});
+
+export default function CenteredTabs(props) {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   let [marker, setMarker] = React.useState(0);
 
   if( marker !== props.marker ) {
@@ -11,24 +24,17 @@ export default function FullWidthTabs(props) {
     setValue(0)
   }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
-    <div>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          {props.children}
-        </Tabs>
-      </AppBar>
-    </div>
+    <Paper className={classes.root}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+      >
+      {props.children}
+      </Tabs>
+    </Paper>
   );
 }

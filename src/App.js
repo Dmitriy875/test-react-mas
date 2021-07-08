@@ -1,4 +1,3 @@
-import './App.css';
 import Header from './Header';
 import UsersTable from './users_table/UsersTable';
 

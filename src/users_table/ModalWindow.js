@@ -1,11 +1,36 @@
 import React, { Component } from 'react'
-import { Grid, Container, Paper, Divider, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { Table, TableRow, TableCell, TableBody, TableHead, TableContainer } from '@material-ui/core';
 import { Checkbox, Tab } from '@material-ui/core';
 import FullWidthTabs from './Tabs.js';
 import CloseIcon from '@material-ui/icons/Close';
+import { withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 
-export default class ModalWindow extends Component {
+const styles = theme => ({
+  cursor: {
+    cursor: 'pointer'
+  },
+  tasks: {
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  tasksCell: {
+    minWidth: '90%',
+  },
+  modal: {
+    [theme.breakpoints.down('md')]: {
+      backgroundColor: 'tomato',
+      position: 'absolute',
+      maxWidth: '300px',
+      top: '38vh',
+      right: '10vh',
+      overflow: 'hidden',
+    },
+  }
+});
+
+class ModalWindow extends Component {
   constructor(props) {
     super(props)
     this.showDone = this.showDone.bind(this);
@@ -40,9 +65,6 @@ export default class ModalWindow extends Component {
 
   shouldComponentUpdate() {
     console.log('shouldComponentUpdate')
-    // if(this.state.todos) {
-    //   return false
-    // }
     return true
   }
 
@@ -57,27 +79,28 @@ export default class ModalWindow extends Component {
         return <p>Error {error.message}</p>
       } else {
         return (
-          <Container>
+
             <Paper>
               {this.getTable()}
             </Paper>
-          </Container>
+
         )
       }
     }
   }
 
   getTable() {
+    const { classes } = this.props;
     return(
-      <Grid container direction="row" justify="center" alignItems="center">
-        <div className="modal-window">
-          <Grid container direction="row" justify="center" alignItems="center">
+      <Box maxHeight={'60vh'} className={classes.tasks}>
+        <Grid container direction="column" justify="center" alignItems="center" className={classes.modal}>
+
+          <Grid container justify="center" alignItems="center" padding={5}>
             <Grid item sm={11}><Typography variant="h6">To do</Typography></Grid>
-            <Grid item sm={1}><CloseIcon /></Grid>
-            <Divider variant="fullWidth" />
+            <Grid item sm={1}><CloseIcon className={classes.cursor} onClick={() => {this.props.closeWindow()}}/></Grid>
           </Grid>
 
-            <Grid container direction="row" justify="center" alignItems="center">
+            <Grid container justify="center" alignItems="center">
               <FullWidthTabs marker={this.props.todos}>
                 <Tab label="Все" onClick={this.showAll} />
                 <Tab label="Завершены" onClick={this.showActive} />
@@ -100,12 +123,14 @@ export default class ModalWindow extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
+
       </Grid>
+    </Box>
     )
   }
 
   getTasks() {
+    const { classes } = this.props;
     let todo = this.state.todos
       ? this.state.todos
       : this.props.todos;
@@ -124,7 +149,7 @@ export default class ModalWindow extends Component {
     return(
       todo.map(item=>(
         <TableRow key={item.id}>
-          <TableCell>
+          <TableCell className={classes.tasksCell}>
             <span>
               {item.title}
             </span>
@@ -169,3 +194,4 @@ export default class ModalWindow extends Component {
     })
   }
 }
+export default withStyles(styles, { withTheme: true })(ModalWindow);
