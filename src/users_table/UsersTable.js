@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import Box from '@material-ui/core/Box';
+import Accordion from './Accordion.js';
 
 const styles = theme => ({
   cursor: {
@@ -121,6 +121,7 @@ class UsersTable extends Component {
       }
     )
   }
+
   closeWindow() {
     this.setState({
       modalVisible: false
@@ -150,66 +151,58 @@ class UsersTable extends Component {
 
         <Box mt={10}>
           <Grid container direction="row" justify="center" alignItems="center" item lg={12} md={12} sm={12}>
-              <Grid item lg={5} xs={12}>
-                <Paper>
-                    <Grid container direction="row" justify="center" alignItems="center" spacing={5} className={classes.textAlign} item md={12} xs={12}>
-                        <Grid item md={12} xs={12}>
+            <Grid item lg={5} xs={12}>
+              <Paper>
 
-                            <Grid container direction="row">
-                              <Grid item xs={3}>
-                                <FilterListIcon />
+                {/* Фильтр */}
+                <Accordion>
+                  <Grid container direction="row" justify="center" alignItems="center" spacing={5} className={classes.textAlign} item md={12} xs={12}>
+                      <Grid item md={12} xs={12}>
+
+                          {/* поле ввода имя */}
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>username</Grid>
+                            <Grid item xs={5}>
+                              <Autocomplete
+                                id="nameSelect"
+                                freeSolo
+                                onChange={(event, value) => {this.getInput(value, event)}}
+                                disabled={this.state.inputType === 'site' ? true : false}
+                                inputValue={ (this.state.input && this.state.inputType !== 'site')? this.state.input : '' }
+                                options={this.state.users.map((option) => option.name)}
+                                renderInput={(params) => (
+                                  <TextField {...params} label="Enter Username" margin="normal" variant="outlined" />
+                                )}
+                                />
                               </Grid>
-                              <Grid item xs={4}>
-                                <Typography variant="h5">
-                                  Фильтр
-                                </Typography>
+                          </Grid>
+
+                          {/* поле ввода website */}
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>website</Grid>
+                            <Grid item xs={5}>
+                              <Autocomplete
+                                freeSolo
+                                id="websiteSelect"
+                                onChange={(event, value) => {this.getInput(value, event)}}
+                                disabled={this.state.inputType === 'name' ? true : false}
+                                inputValue={ (this.state.input && this.state.inputType !== 'name') ? this.state.input : '' }
+                                options={this.state.users.map((option) => option.website)}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Enter website name"
+                                    margin="normal"
+                                    variant="outlined"
+                                    InputProps={{ ...params.InputProps, type: 'search' }}
+                                  />
+                                )}
+                                />
                               </Grid>
-                            </Grid>
-                            <Grid container direction="row" alignItems="center">
-                              <Grid item xs={4}>username</Grid>
-                              <Grid item xs={5}>
-                                <Autocomplete
-                                  id="nameSelect"
-                                  freeSolo
-                                  onChange={(event, value) => {this.getInput(value, event)}}
-                                  disabled={this.state.inputType === 'site' ? true : false}
-                                  inputValue={ (this.state.input && this.state.inputType !== 'site')? this.state.input : '' }
-                                  options={this.state.users.map((option) => option.name)}
-                                  renderInput={(params) => (
-                                    <TextField {...params} label="Enter Username" margin="normal" variant="outlined" />
-                                  )}
-                                  />
-                                </Grid>
-                            </Grid>
+                          </Grid>
+                      </Grid>
 
-                            <Grid container direction="row" alignItems="center">
-                              <Grid item xs={4}>website</Grid>
-                              <Grid item xs={5}>
-                                <Autocomplete
-                                  freeSolo
-                                  id="websiteSelect"
-                                  onChange={(event, value) => {this.getInput(value, event)}}
-                                  disabled={this.state.inputType === 'name' ? true : false}
-                                  inputValue={ (this.state.input && this.state.inputType !== 'name') ? this.state.input : '' }
-                                  options={this.state.users.map((option) => option.website)}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Enter website name"
-                                      margin="normal"
-                                      variant="outlined"
-                                      InputProps={{ ...params.InputProps, type: 'search' }}
-                                    />
-                                  )}
-                                  />
-                                </Grid>
-                            </Grid>
-
-
-                        </Grid>
-                    </Grid>
-
-                    <Box pb={1}>
+                      {/* кнопки сбросить/применить */}
                       <Grid item xs={12} container justify="flex-end">
                         <Grid item xs={2} >
                           <Button variant="outlined" color='secondary' onClick={this.resetFilter}>Сбросить</Button>
@@ -219,8 +212,13 @@ class UsersTable extends Component {
                         </Grid>
                         <Grid item xs={2}></Grid>
                       </Grid>
-                    </Box>
 
+                  </Grid>
+
+
+                </Accordion>
+
+                {/* таблица с пользователями */}
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -264,6 +262,7 @@ class UsersTable extends Component {
             <Grid item xs={1}></Grid>
             <Grid item xs={3}>
 
+              {/* окно с заданиями */}
               <ModalWindow
                 name={this.state.name}
                 id={this.state.id}
